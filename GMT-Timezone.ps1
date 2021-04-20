@@ -1,11 +1,12 @@
 
-Configuration SetTimeZone
+Configuration SetTimeZoneGMT
 {
-    Import-DSCResource -Name xTimeZone
-    Node ('localhost')
+    Import-DSCResource -ModuleName ComputerManagementDsc
+    Node ('localhost')    
     {
-        xTimeZone TimeZoneExample
+        TimeZone TimeZoneExample
         {
+            IsSingleInstance = 'Yes'
             TimeZone         = 'GMT Standard Time'
         }
     }
