@@ -1,10 +1,10 @@
 
 Configuration SetTimeZone
 {
-    Import-DSCResource -Name TimeZone
+    Import-DSCResource -Name xTimeZone
     Node ('localhost')
     {
-        TimeZone TimeZoneExample
+        xTimeZone TimeZoneExample
         {
             TimeZone         = 'GMT Standard Time'
         }
