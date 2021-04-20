@@ -1,20 +1,10 @@
 
 Configuration SetTimeZone
 {
-    param
-    (
-        [Parameter()]
-        [System.String[]]
-        $NodeName = 'localhost'
-    )
-
-    Import-DSCResource -ModuleName ComputerManagementDsc
-
-    Node $NodeName
+    Node ('localhost')
     {
         TimeZone TimeZoneExample
         {
-            IsSingleInstance = 'Yes'
             TimeZone         = 'GMT Standard Time'
         }
     }
