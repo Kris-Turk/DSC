@@ -1,6 +1,7 @@
 
 Configuration SetTimeZoneGMT
 {
+    Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DSCResource -ModuleName ComputerManagementDsc
     Node ('localhost')    
     {
