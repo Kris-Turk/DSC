@@ -1,0 +1,179 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.3.255.40792",
+      "templateHash": "8850910560746284652"
+    }
+  },
+  "parameters": {
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "snet-shared-uks-002"
+    },
+    "existingvNetRg": {
+      "type": "string",
+      "defaultValue": "rg-vnet-hub-uks-001"
+    },
+    "virtualMachineName": {
+      "type": "string",
+      "defaultValue": "vm-dsc-uks-02"
+    },
+    "virtualMachineComputerName": {
+      "type": "string",
+      "defaultValue": "vm-dsc-uks-01"
+    },
+    "osDiskType": {
+      "type": "string",
+      "defaultValue": "StandardSSD_LRS"
+    },
+    "virtualMachineSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS1_v2"
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "azure_admin"
+    },
+    "configurationFunction": {
+      "type": "string",
+      "defaultValue": "GMT-Timezone.ps1\\SetTimeZoneGMT"
+    },
+    "moduleFilePath": {
+      "type": "string",
+      "defaultValue": "GMT-Timezone.zip"
+    },
+    "_artifactsLocation": {
+      "type": "string"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "secureString"
+    },
+    "adminPassword": {
+      "type": "secureString"
+    },
+    "patchMode": {
+      "type": "string",
+      "defaultValue": "manual"
+    },
+    "enableHotpatching": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "zone": {
+      "type": "string",
+      "defaultValue": "1"
+    }
+  },
+  "functions": [],
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "networkInterfaceName": "[format('nic-{0}', parameters('virtualMachineName'))]",
+    "ModulesUrl": "[format('{0}{1}{2}', parameters('_artifactsLocation'), parameters('moduleFilePath'), parameters('_artifactsLocationSasToken'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2018-10-01",
+      "name": "[variables('networkInterfaceName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "subnet": {
+                "id": "[format('{0}/subnets/{1}', extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('existingvNetRg')), 'Microsoft.Network/virtualNetworks', 'vnet-hub-uks-001'), parameters('subnetName'))]"
+              },
+              "privateIPAllocationMethod": "Dynamic"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2020-12-01",
+      "name": "[parameters('virtualMachineName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('virtualMachineSize')]"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "[parameters('osDiskType')]"
+            }
+          },
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2019-Datacenter",
+            "version": "latest"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+            }
+          ]
+        },
+        "osProfile": {
+          "computerName": "[parameters('virtualMachineComputerName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]",
+          "windowsConfiguration": {
+            "enableAutomaticUpdates": false,
+            "provisionVMAgent": true,
+            "patchSettings": {
+              "enableHotpatching": "[parameters('enableHotpatching')]",
+              "patchMode": "[parameters('patchMode')]"
+            }
+          }
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true
+          }
+        }
+      },
+      "zones": [
+        "[parameters('zone')]"
+      ],
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "apiVersion": "2020-12-01",
+      "name": "[format('{0}/PowerShell.DSC', parameters('virtualMachineName'))]",
+      "location": "[variables('location')]",
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.19",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "ModulesUrl": "[variables('ModulesUrl')]",
+          "ConfigurationFunction": "[parameters('configurationFunction')]",
+          "properties": {}
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "adminUsername": {
+      "type": "string",
+      "value": "[parameters('adminUsername')]"
+    }
+  }
+}
