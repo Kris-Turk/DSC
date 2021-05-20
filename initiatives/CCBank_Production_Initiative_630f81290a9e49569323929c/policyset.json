@@ -1,0 +1,182 @@
+{
+ "properties": {
+  "displayName": "CCBank Production Initiative",
+  "policyType": "Custom",
+  "metadata": {
+   "version": "1.0.0",
+   "parameterScopes": {
+    "listOfAllowedLocations": "/providers/Microsoft.Management/managementGroups/70116d10-f4d6-4ab7-a0ac-123f823d5985"
+   },
+   "createdBy": "6a87842d-40d9-4359-8a30-b7d75f187c7b",
+   "createdOn": "2021-04-09T15:14:10.0361967Z",
+   "updatedBy": null,
+   "updatedOn": null
+  },
+  "parameters": {},
+  "policyDefinitions": [
+   {
+    "policyDefinitionReferenceId": "Require a tag on resource groups_1",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/96670d01-0a4d-4649-9c89-2d3abc0a5025",
+    "parameters": {
+     "tagName": {
+      "value": "ApplicationName"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Require a tag on resource groups_2",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/96670d01-0a4d-4649-9c89-2d3abc0a5025",
+    "parameters": {
+     "tagName": {
+      "value": "BusinessUnit"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Require a tag on resource groups_3",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/96670d01-0a4d-4649-9c89-2d3abc0a5025",
+    "parameters": {
+     "tagName": {
+      "value": "DR"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Require a tag on resource groups_4",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/96670d01-0a4d-4649-9c89-2d3abc0a5025",
+    "parameters": {
+     "tagName": {
+      "value": "Env"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Require a tag on resource groups_5",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/96670d01-0a4d-4649-9c89-2d3abc0a5025",
+    "parameters": {
+     "tagName": {
+      "value": "Owner"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Inherit a tag from the resource group if missing_1",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ea3f2387-9b95-492a-a190-fcdc54f7b070",
+    "parameters": {
+     "tagName": {
+      "value": "ApplicationName"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Inherit a tag from the resource group if missing_2",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ea3f2387-9b95-492a-a190-fcdc54f7b070",
+    "parameters": {
+     "tagName": {
+      "value": "BusinessUnit"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Inherit a tag from the resource group if missing_3",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ea3f2387-9b95-492a-a190-fcdc54f7b070",
+    "parameters": {
+     "tagName": {
+      "value": "DR"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Inherit a tag from the resource group if missing_4",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ea3f2387-9b95-492a-a190-fcdc54f7b070",
+    "parameters": {
+     "tagName": {
+      "value": "Env"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Inherit a tag from the resource group if missing_5",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/ea3f2387-9b95-492a-a190-fcdc54f7b070",
+    "parameters": {
+     "tagName": {
+      "value": "Owner"
+     }
+    },
+    "groupNames": [
+     "Tagging"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Allowed locations_1",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+    "parameters": {
+     "listOfAllowedLocations": {
+      "value": [
+       "uksouth",
+       "ukwest",
+       "westeurope"
+      ]
+     }
+    },
+    "groupNames": [
+     "Sovereignty"
+    ]
+   },
+   {
+    "policyDefinitionReferenceId": "Allowed locations for resource groups_1",
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988",
+    "parameters": {
+     "listOfAllowedLocations": {
+      "value": [
+       "uksouth",
+       "ukwest",
+       "westeurope"
+      ]
+     }
+    },
+    "groupNames": [
+     "Sovereignty"
+    ]
+   }
+  ],
+  "policyDefinitionGroups": [
+   {
+    "name": "Tagging"
+   },
+   {
+    "name": "Sovereignty"
+   }
+  ]
+ },
+ "id": "/providers/Microsoft.Management/managementGroups/70116d10-f4d6-4ab7-a0ac-123f823d5985/providers/Microsoft.Authorization/policySetDefinitions/630f81290a9e49569323929c",
+ "type": "Microsoft.Authorization/policySetDefinitions",
+ "name": "630f81290a9e49569323929c"
+}
